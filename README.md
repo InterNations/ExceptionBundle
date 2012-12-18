@@ -34,7 +34,7 @@ ExceptionInterface.php  RuntimeException.php  DomainException.php
 ```
 
 `cat app/src/MyVendor/MyBundle/Exception/RuntimeException.php`
-```
+```php
 <?php
 namespace MyVendor\MyBundle\Exception;
 
