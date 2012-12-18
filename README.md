@@ -111,8 +111,9 @@ namespace MyVendor\MyBundle;
 
 use MyVendor\MyBundle\Exception\InvalidArgumentException;
 use MyVendor\MyBundle\Exception\RuntimeException;
-
-throw new RuntimeException('Runtime error');
-
-throw new InvalidArgumentException('Invalid argument');
+...
+    throw new RuntimeException('Runtime error');
+...
+    throw new InvalidArgumentException('Invalid argument');
+...
 ```
