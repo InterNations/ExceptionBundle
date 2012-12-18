@@ -47,3 +47,72 @@ class RuntimeException extends BaseRuntimeException implements ExceptionInterfac
 ```
 
 You can also specify the shortcut "spl" to subclass all Spl Exceptions
+
+## Rewrite bundle exceptions
+`ExceptionBundle` uses PHP Parser to rewrite all throw statements in a bundle code base.
+
+`cat app/src/MyVendor/MyBundle/MyClass.php`
+
+```php
+<?php
+namespace MyVendor\MyBundle;
+
+use RuntimeException;
+...
+    throw new RuntimeException('Runtime error');
+...
+    throw new \InvalidArgumentException('Invalid argument');
+```
+
+`php app/console exception:rewrite app/src/MyVendor/MyBundle "MyVendor\MyBundle"`
+
+Will output:
+
+```
+Found bundle specific exception class BadFunctionCallException
+Found bundle specific exception class BadMethodCallException
+Found bundle specific exception class DomainException
+Found bundle specific exception class InvalidArgumentException
+Found bundle specific exception class LengthException
+Found bundle specific exception class LogicException
+Found bundle specific exception class OutOfBoundsException
+Found bundle specific exception class OutOfRangeException
+Found bundle specific exception class OverflowException
+Found bundle specific exception class RangeException
+Found bundle specific exception class RuntimeException
+Found bundle specific exception class UnderflowException
+Found bundle specific exception class UnexpectedValueException
+...............
+
+------------------------------------------------------------
+------------------------------------------------------------
+SUMMARY
+------------------------------------------------------------
+------------------------------------------------------------
+Files analyzed:               15
+Files changed:                1
+------------------------------------------------------------
+"throw" statements found:     2
+"throw" statements rewritten: 1
+------------------------------------------------------------
+"use" statements found:       1
+"use" statements rewritten:   1
+"use" statements added:       1
+------------------------------------------------------------
+"catch" statements found:     0
+```
+
+... and transform the source file to this one:
+
+```php
+<?php
+<?php
+namespace MyVendor\MyBundle;
+
+use MyVendor\MyBundle\Exception\InvalidArgumentException;
+use MyVendor\MyBundle\Exception\RuntimeException;
+
+throw new RuntimeException('Runtime error');
+
+throw new InvalidArgumentException('Invalid argument');
+```
