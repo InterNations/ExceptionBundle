@@ -39,7 +39,7 @@ class ExceptionVisitorTest extends \PHPUnit_Framework_TestCase
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
 
-        $this->assertCount(7, $this->visitor->getThrowStatements());
+        $this->assertCount(8, $this->visitor->getThrowStatements());
         $asserted = true;
         foreach ($this->visitor->getThrowStatements() as $stmt) {
             $this->assertInstanceOf('PHPParser_Node_Stmt_Throw', $stmt);
@@ -52,20 +52,20 @@ class ExceptionVisitorTest extends \PHPUnit_Framework_TestCase
     public function testFilterThrowStatementsByExpression()
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(6, $this->visitor->getThrowStatements('PHPParser_Node_Expr_New'));
+        $this->assertCount(7, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New']));
     }
 
     public function testFilterThrowStatementsByGlobalNamespaceAndExpression()
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(5, $this->visitor->getThrowStatements('PHPParser_Node_Expr_New', '\\'));
+        $this->assertCount(5, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New'], '\\'));
     }
 
     public function testFilterThrowStatementsBySpecificNamespaceAndExpression()
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(1, $this->visitor->getThrowStatements('PHPParser_Node_Expr_New', 'Custom'));
-        $this->assertCount(1, $this->visitor->getThrowStatements('PHPParser_Node_Expr_New', '\\Custom'));
+        $this->assertCount(1, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New'], 'Custom'));
+        $this->assertCount(1, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_StaticCall', 'PHPParser_Node_Expr_New'], '\\Custom'));
     }
 
     public function testGetUseStatements()

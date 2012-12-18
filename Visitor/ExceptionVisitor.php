@@ -6,13 +6,23 @@ use PHPParser_Node as Node;
 use PHPParser_Node_Stmt_Throw as ThrowStmt;
 use PHPParser_Node_Stmt_Use as UseStmt;
 use PHPParser_Node_Stmt_Namespace as NamespaceStmt;
+use PHPParser_Node_Name_FullyQualified as FullyQualifiedName;
 
 class ExceptionVisitor extends AbstractNodeVisitor
 {
+    /**
+     * @var UseStmt[]
+     */
     private $useStatements = [];
 
+    /**
+     * @var ThrowStmt[]
+     */
     private $throwStatements = [];
 
+    /**
+     * @var NamespaceStmt
+     */
     private $currentNamespace;
 
     public function enterNode(Node $node)
@@ -34,24 +44,31 @@ class ExceptionVisitor extends AbstractNodeVisitor
         }
     }
 
-    public function getThrowStatements($expressionType = null, $namespace = null)
+    public function getThrowStatements(array $expressionTypes = null, $namespace = null)
     {
         $throwStatements = $this->throwStatements;
 
-        if ($expressionType !== null) {
-            foreach ($throwStatements as $key => $stmt) {
-                if (!$stmt->expr instanceof $expressionType) {
-                    unset($throwStatements[$key]);
+        if ($expressionTypes !== null) {
+            $throwStatements = array_filter(
+                $throwStatements,
+                function ($stmt) use ($expressionTypes) {
+                    foreach ($expressionTypes as $expressionType) {
+                        if ($stmt->expr instanceof $expressionType) {
+                            return true;
+                        }
+                    }
+                    return false;
                 }
-            }
+            );
         }
 
         if ($namespace !== null) {
-            foreach ($throwStatements as $key => $stmt) {
-                if (!$this->isInNamespace($namespace, $stmt->expr->class->parts)) {
-                    unset($throwStatements[$key]);
+            $throwStatements = array_filter(
+                $throwStatements,
+                function ($stmt) use ($namespace) {
+                    return $this->isInNamespace($namespace, $stmt->expr->class);
                 }
-            }
+            );
         }
 
         return $throwStatements;
@@ -62,14 +79,18 @@ class ExceptionVisitor extends AbstractNodeVisitor
         return $this->useStatements;
     }
 
-    private function isInNamespace($namespace, array $parts)
+    private function isInNamespace($namespace, Node $node)
     {
+        if (!$node instanceof FullyQualifiedName) {
+            return false;
+        }
+
         // Special case global namespace
         if ($namespace === '\\') {
-            return count($parts) === 1;
+            return strpos($node->toString(), '\\') === false;
         }
 
         $namespace = trim($namespace, '\\');
-        return strpos(join('\\', $parts), $namespace) === 0;
+        return strpos($node->toString(), $namespace) === 0;
     }
 }

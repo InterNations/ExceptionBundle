@@ -1,12 +1,12 @@
 <?php
 namespace InterNations\Bundle\ExceptionTestBundle;
 
-class FqException
+use FooException;
+
+class UndeclaredException
 {
     public function throwException()
     {
-        throw new \RuntimeException();
+        throw new FooException();
     }
 }
-
-throw new \RuntimeException();

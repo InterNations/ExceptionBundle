@@ -33,11 +33,21 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
     public function testRewritingFqExceptions($inputFile, $outputFile)
     {
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException');
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException');
 
+        $lines = file($inputFile);
+        $eof = array_fill(0, count($lines), false);
+        $eof[] = true;
+        $this->file
+            ->expects($this->any())
+            ->method('eof')
+            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($eof));
         $this->file
             ->expects($this->any())
             ->method('fgets')
-            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls(file($inputFile)));
+            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($lines));
         $this->file
             ->expects($this->once())
             ->method('fwrite')

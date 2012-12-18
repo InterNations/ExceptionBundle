@@ -2,12 +2,11 @@
 namespace InterNations\Bundle\ExceptionTestBundle;
 
 use InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException;
-class FqException
+
+class FactoryMethodException
 {
-    public function throwException()
+    public function throwExceptionFromFactory()
     {
-        throw new RuntimeException();
+        throw RuntimeException::factory();
     }
 }
-
-throw new RuntimeException();

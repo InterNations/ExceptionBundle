@@ -41,4 +41,9 @@ class ThrowSimpleException
     {
         throw new CustomException('Custom Exception should be ignored');
     }
+
+    public function testThrowVariable()
+    {
+        throw new $variable;
+    }
 }
