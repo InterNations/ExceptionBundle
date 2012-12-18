@@ -50,6 +50,10 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
             ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($lines));
         $this->file
             ->expects($this->once())
+            ->method('seek')
+            ->with(0);
+        $this->file
+            ->expects($this->once())
             ->method('fwrite')
             ->with(file_get_contents($outputFile));
 

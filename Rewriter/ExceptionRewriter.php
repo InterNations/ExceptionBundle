@@ -107,6 +107,7 @@ class ExceptionRewriter
             }
         }
 
+        $file->seek(0);
         $file->fwrite(join('', $lines));
     }
 
