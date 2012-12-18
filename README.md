@@ -1,4 +1,5 @@
-# ExceptionBundle: cleaner exception handling for Symfony2 bundles[![Build Status](https://travis-ci.org/InterNations/ExceptionBundle.png?branch=master)](https://travis-ci.org/InterNations/ExceptionBundle)
+# ExceptionBundle[![Build Status](https://travis-ci.org/InterNations/ExceptionBundle.png?branch=master)](https://travis-ci.org/InterNations/ExceptionBundle)
+## Clean exception handling for your Symfony 2 bundles
 
 The InterNationsExceptionBundle helps you managing your bundles exceptions:
 
