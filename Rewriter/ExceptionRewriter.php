@@ -9,6 +9,7 @@ use PHPParser_NodeVisitor_NameResolver as NameResolverVisitor;
 use PHPParser_NodeAbstract as AbstractNode;
 use PHPParser_Node_Stmt_Use as UseStmt;
 use InterNations\Bundle\ExceptionBundle\Visitor\ExceptionVisitor;
+use InterNations\Bundle\ExceptionBundle\Value\Report;
 
 class ExceptionRewriter
 {
@@ -47,6 +48,12 @@ class ExceptionRewriter
         $this->specializedExceptions[] = substr($exceptionClassName, strrpos($exceptionClassName, '\\') + 1);
     }
 
+    /**
+     * Rewrite exceptions in $file
+     *
+     * @param SplFileObject $file
+     * @return Report
+     */
     public function rewrite(SplFileObject $file)
     {
         $lines = [];
@@ -61,6 +68,12 @@ class ExceptionRewriter
         $traverser->addVisitor($exceptionVisitor);
 
         $traverser->traverse($this->parser->parse($buffer));
+
+        $report = new Report();
+        $report->catchStatementsFound = count($exceptionVisitor->getCatchStatements());
+        foreach ($exceptionVisitor->getUseStatements() as $useStatement) {
+            $report->useStatementsFound += count($useStatement->uses);
+        }
 
         $useStatementsProcessed = [];
         foreach ($exceptionVisitor->getThrowStatements(['PHPParser_Node_Expr_New', 'PHPParser_Node_Expr_StaticCall'], '\\') as $throwStmt) {
@@ -82,16 +95,24 @@ class ExceptionRewriter
                 }
             }
 
+            $report->throwStatementsFound++;
+
             $namespaceStmt = $throwStmt->getAttribute('namespace');
             $throwPosition = $this->getArrayPosition($throwStmt->expr->class);
             $replacement = $namespaceStmt ? $exceptionClassName : $this->prependNamespace($exceptionClassName);
+            $originalThrowLine = $lines[$throwPosition];
             $lines[$throwPosition] = preg_replace($this->getRegex($exceptionClassName), $replacement, $lines[$throwPosition]);
+
+            if ($originalThrowLine != $lines[$throwPosition]) {
+                $report->throwStatementsRewritten++;
+            }
 
             if (!$useStatementFound && $namespaceStmt && !in_array($exceptionClassName, $useStatementsProcessed)) {
 
                 $namespacePosition = $this->getArrayPosition($throwStmt->getAttribute('namespace'));
                 $lines[$namespacePosition] .= sprintf("\nuse %s;", $this->prependNamespace($exceptionClassName));
                 $useStatementsProcessed[] = $exceptionClassName;
+                $report->useStatementsAdded++;
 
             } elseif ($useStatementFound && !in_array($exceptionClassName, $useStatementsProcessed)) {
 
@@ -102,6 +123,9 @@ class ExceptionRewriter
                     $lines[$usagePosition],
                     1
                 );
+
+                $report->useStatementsRewritten++;
+
                 $useStatementsProcessed[] = $exceptionClassName;
 
             }
@@ -109,6 +133,8 @@ class ExceptionRewriter
 
         $file->seek(0);
         $file->fwrite(join('', $lines));
+
+        return $report;
     }
 
     protected function getBundleExceptionNamespace()

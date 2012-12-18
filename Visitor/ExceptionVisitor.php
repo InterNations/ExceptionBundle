@@ -4,6 +4,7 @@ namespace InterNations\Bundle\ExceptionBundle\Visitor;
 use PHPParser_NodeVisitorAbstract as AbstractNodeVisitor;
 use PHPParser_Node as Node;
 use PHPParser_Node_Stmt_Throw as ThrowStmt;
+use PHPParser_Node_Stmt_Catch as CatchStmt;
 use PHPParser_Node_Stmt_Use as UseStmt;
 use PHPParser_Node_Stmt_Namespace as NamespaceStmt;
 use PHPParser_Node_Name_FullyQualified as FullyQualifiedName;
@@ -19,6 +20,11 @@ class ExceptionVisitor extends AbstractNodeVisitor
      * @var ThrowStmt[]
      */
     private $throwStatements = [];
+
+    /**
+     * @var CatchStmt[]
+     */
+    private $catchStatements = [];
 
     /**
      * @var NamespaceStmt
@@ -41,6 +47,8 @@ class ExceptionVisitor extends AbstractNodeVisitor
             }
         } elseif ($node instanceof UseStmt) {
             $this->useStatements[] = $node;
+        } elseif ($node instanceof CatchStmt) {
+            $this->catchStatements[] = $node;
         }
     }
 
@@ -77,6 +85,11 @@ class ExceptionVisitor extends AbstractNodeVisitor
     public function getUseStatements()
     {
         return $this->useStatements;
+    }
+
+    public function getCatchStatements()
+    {
+        return $this->catchStatements;
     }
 
     private function isInNamespace($namespace, Node $node)

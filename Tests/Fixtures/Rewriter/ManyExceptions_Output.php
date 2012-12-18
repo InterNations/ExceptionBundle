@@ -27,4 +27,12 @@ class FqException
     {
         throw new LogicException('Message', 123, new BadFunctionCallException());
     }
+
+    public function catchException()
+    {
+        try {
+            $this->something();
+        } catch (Exception $e) {
+        }
+    }
 }
