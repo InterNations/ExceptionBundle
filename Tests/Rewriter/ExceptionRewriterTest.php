@@ -40,6 +40,37 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException');
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException');
 
+        $this->mockFileAccess($inputFile, $outputFile);
+
+        $this->rewriter->rewrite($this->file);
+    }
+
+    public function testReportReturned()
+    {
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException');
+        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException');
+
+        $this->mockFileAccess(
+            __DIR__ . '/../Fixtures/Rewriter/ManyExceptions_Input.php',
+            __DIR__ . '/../Fixtures/Rewriter/ManyExceptions_Output.php'
+        );
+
+        $report = $this->rewriter->rewrite($this->file);
+
+        $this->assertSame(4, $report->throwStatementsFound);
+        $this->assertSame(2, $report->throwStatementsRewritten);
+
+        $this->assertSame(3, $report->useStatementsFound);
+        $this->assertSame(2, $report->useStatementsRewritten);
+        $this->assertSame(1, $report->useStatementsAdded);
+
+        $this->assertSame(1, $report->catchStatementsFound);
+    }
+
+    private function mockFileAccess($inputFile, $outputFile)
+    {
         $lines = file($inputFile);
         $eof = array_fill(0, count($lines), false);
         $eof[] = true;
@@ -59,46 +90,5 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('fwrite')
             ->with(file_get_contents($outputFile));
-
-        $this->rewriter->rewrite($this->file);
-    }
-
-    public function testReportReturned()
-    {
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException');
-
-        $lines = file(__DIR__ . '/../Fixtures/Rewriter/ManyExceptions_Input.php');
-        $eof = array_fill(0, count($lines), false);
-        $eof[] = true;
-        $this->file
-            ->expects($this->any())
-            ->method('eof')
-            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($eof));
-        $this->file
-            ->expects($this->any())
-            ->method('fgets')
-            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($lines));
-        $this->file
-            ->expects($this->once())
-            ->method('seek')
-            ->with(0);
-        $this->file
-            ->expects($this->once())
-            ->method('fwrite')
-            ->with(file_get_contents(__DIR__ . '/../Fixtures/Rewriter/ManyExceptions_Output.php'));
-
-        $report = $this->rewriter->rewrite($this->file);
-
-        $this->assertSame(4, $report->throwStatementsFound);
-        $this->assertSame(2, $report->throwStatementsRewritten);
-
-        $this->assertSame(3, $report->useStatementsFound);
-        $this->assertSame(2, $report->useStatementsRewritten);
-        $this->assertSame(1, $report->useStatementsAdded);
-
-        $this->assertSame(1, $report->catchStatementsFound);
     }
 }

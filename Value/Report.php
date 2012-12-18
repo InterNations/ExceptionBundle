@@ -14,4 +14,11 @@ class Report
     public $useStatementsAdded = 0;
 
     public $catchStatementsFound = 0;
+
+    public function fileChanged()
+    {
+        return $this->throwStatementsRewritten > 0
+            || $this->useStatementsRewritten > 0
+            || $this->useStatementsAdded > 0;
+    }
 }

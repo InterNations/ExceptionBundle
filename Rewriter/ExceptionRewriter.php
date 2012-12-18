@@ -71,6 +71,7 @@ class ExceptionRewriter
 
         $report = new Report();
         $report->catchStatementsFound = count($exceptionVisitor->getCatchStatements());
+        $report->throwStatementsFound = count($exceptionVisitor->getThrowStatements());
         foreach ($exceptionVisitor->getUseStatements() as $useStatement) {
             $report->useStatementsFound += count($useStatement->uses);
         }
@@ -94,8 +95,6 @@ class ExceptionRewriter
                     }
                 }
             }
-
-            $report->throwStatementsFound++;
 
             $namespaceStmt = $throwStmt->getAttribute('namespace');
             $throwPosition = $this->getArrayPosition($throwStmt->expr->class);
