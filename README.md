@@ -1,4 +1,4 @@
-# ExceptionBundle: cleaner exception handling for Symfony2 bundles
+# ExceptionBundle: cleaner exception handling for Symfony2 bundles[![Build Status](https://travis-ci.org/InterNations/ExceptionBundle.png?branch=master)](https://travis-ci.org/InterNations/ExceptionBundle)
 
 The InterNationsExceptionBundle helps you managing your bundles exceptions:
 
@@ -105,7 +105,6 @@ Files changed:                1
 ... and transform the source file to this one:
 
 ```php
-<?php
 <?php
 namespace MyVendor\MyBundle;
 
