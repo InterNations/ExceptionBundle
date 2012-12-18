@@ -31,7 +31,7 @@ Writing app/src/MyVendor/MyBundle/Exception/DomainException.php
 ```
 ls app/src/MyVendor/MyBundle/Exception
 ExceptionInterface.php  RuntimeException.php  DomainException.php
-``
+```
 
 `cat app/src/MyVendor/MyBundle/Exception/RuntimeException.php`
 ```
