@@ -28,8 +28,9 @@ Writing app/src/MyVendor/MyBundle/Exception/RuntimeException.php
 Writing app/src/MyVendor/MyBundle/Exception/DomainException.php
 ```
 
+`ls app/src/MyVendor/MyBundle/Exception`
+
 ```
-ls app/src/MyVendor/MyBundle/Exception
 ExceptionInterface.php  RuntimeException.php  DomainException.php
 ```
 
