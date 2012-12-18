@@ -2,7 +2,7 @@
 namespace InterNations\Bundle\ExceptionBundle\CodeGenerator;
 
 use ReflectionClass;
-use RuntimeException;
+use InterNations\Bundle\ExceptionBundle\Exception\RuntimeException;
 use ReflectionException;
 
 class ExceptionGenerator
