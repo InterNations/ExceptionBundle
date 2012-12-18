@@ -17,7 +17,7 @@ The InterNationsExceptionBundle helps you managing your bundles exceptions:
 This command will generate a bunch of exception
 
 ```
-php app/console exception:generate app/src/MyVendor/MyBundle "MyVendor\MyBundle" ExceptionInterface RuntimeException SplException
+php app/console exception:generate app/src/MyVendor/MyBundle "MyVendor\MyBundle" ExceptionInterface RuntimeException DomainException
 ```
 
 Will output:
@@ -25,11 +25,12 @@ Will output:
 Create directory app/src/MyVendor/MyBundle/Exception
 Writing app/src/MyVendor/MyBundle/Exception/ExceptionInterface.php
 Writing app/src/MyVendor/MyBundle/Exception/RuntimeException.php
+Writing app/src/MyVendor/MyBundle/Exception/DomainException.php
 ```
 
 ```
 ls app/src/MyVendor/MyBundle/Exception
-ExceptionInterface.php  RuntimeException.php
+ExceptionInterface.php  RuntimeException.php  DomainException.php
 ``
 
 `cat app/src/MyVendor/MyBundle/Exception/RuntimeException.php`
