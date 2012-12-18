@@ -1,10 +1,11 @@
 {
     "name": "internations/exception-bundle",
     "description": "Helps making your Symfony Bundle a good Exception citizen. Yes, it’s opinionated.",
+    "license": "MIT",
     "require": {
         "symfony/finder": "2.1.*",
         "symfony/console": "2.1.*",
-        "nikic/php-parser": "dev-master",
+        "nikic/php-parser": "0.9.3",
         "lstrojny/functional-php": "dev-master"
     },
     "authors": [
