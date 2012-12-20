@@ -1,16 +1,16 @@
 # ExceptionBundle[![Build Status](https://travis-ci.org/InterNations/ExceptionBundle.png?branch=master)](https://travis-ci.org/InterNations/ExceptionBundle)
 ## Clean exception handling for your Symfony 2 bundles
 
-The `ExceptionBundle` helps you managing your bundles exceptions:
+`ExceptionBundle` helps you managing the exceptions of your bundle:
 
  - Generate exception subclasses from command line including a marker interface
- - Rewrite all global throw statements in your bundle with bundle specific exceptions
+ - Replace all global throw statements in a bundle with bundle specific exception classes
 
 ## Why should you care?
 
  - The simpler exceptions are distinguishable by type, the simpler exceptional conditions are handled
- - Having a bundle specific exception marker interface that all bundle exceptions implement allows clients to simply catch all exceptions of a single bundle
- - Usually, creating all the exception sub classes by hand is cumbersome, `ExceptionBundle` helps a lot with it
+ - Providing a marker interface all bundle exception classes implement allows clients to dramatically simplify exception handling
+ - Usually, creating all the exception sub classes by hand is cumbersome, `ExceptionBundle` can help you
 
 
 ## Usage
@@ -78,7 +78,7 @@ use MyVendor\MyBundle\Exception\RuntimeException;
 
 ## Installation
 
-Adding `internations/exception-bundle` to your `composer.json` and edit `AppKernel.php` like this:
+Add `internations/exception-bundle` to your `composer.json` and edit `AppKernel.php` like this:
 
 ```php
 <?php
