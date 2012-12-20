@@ -3,13 +3,8 @@ php:
   - 5.4
   - 5.5
 
-env:
-    - SF2_VERSION="2.1.*"
-    - SF2_VERSION="2.2-dev"
-
 before_script:
   - wget http://getcomposer.org/composer.phar
-  - php composer.phar require symfony/finder:$SF2_VERSION symfony/console:$SF2_VERSION
   - php composer.phar install --dev
 
 notifications:
