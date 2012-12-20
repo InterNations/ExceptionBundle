@@ -3,9 +3,9 @@
     "description": "Helps making your Symfony Bundle a good Exception citizen. Yes, it’s opinionated.",
     "license": "MIT",
     "require": {
-        "symfony/finder": "2.1.*",
-        "symfony/console": "2.1.*",
-        "nikic/php-parser": "0.9.3",
+        "symfony/finder": ">=2.1,<2.3-dev",
+        "symfony/console": ">=2.1,<2.3-dev",
+        "nikic/php-parser": "0.9.*",
         "lstrojny/functional-php": "dev-master"
     },
     "authors": [
