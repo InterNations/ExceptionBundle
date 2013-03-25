@@ -20,5 +20,8 @@
     ],
     "autoload": {
         "psr-0": {"InterNations\\Bundle\\ExceptionBundle": "src/"}
+    },
+    "require-dev": {
+        "internations/kodierungsregelwerksammlung": "dev-master"
     }
 }
