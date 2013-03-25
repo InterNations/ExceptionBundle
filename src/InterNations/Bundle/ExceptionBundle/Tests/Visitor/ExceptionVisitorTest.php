@@ -2,14 +2,13 @@
 namespace InterNations\Bundle\ExceptionBundle\Tests\Visitor;
 
 use InterNations\Bundle\ExceptionBundle\Visitor\ExceptionVisitor;
-
+use InterNations\Component\Testing\AbstractTestCase;
 use PHPParser_Parser as Parser;
 use PHPParser_Lexer as Lexer;
 use PHPParser_NodeTraverser as NodeTraverser;
 use PHPParser_NodeVisitor_NameResolver as NameResolverVisitor;
 
-
-class ExceptionVisitorTest extends \PHPUnit_Framework_TestCase
+class ExceptionVisitorTest extends AbstractTestCase
 {
     /**
      * @var ExceptionVisitor
@@ -43,7 +42,10 @@ class ExceptionVisitorTest extends \PHPUnit_Framework_TestCase
         $asserted = true;
         foreach ($this->visitor->getThrowStatements() as $stmt) {
             $this->assertInstanceOf('PHPParser_Node_Stmt_Throw', $stmt);
-            $this->assertSame('InterNations\\Bundle\\ExceptionTestBundle', $stmt->getAttribute('namespace')->name->toString('\\'));
+            $this->assertSame(
+                'InterNations\\Bundle\\ExceptionTestBundle',
+                $stmt->getAttribute('namespace')->name->toString('\\')
+            );
             $asserted = true;
         }
         $this->assertTrue($asserted);
@@ -65,7 +67,13 @@ class ExceptionVisitorTest extends \PHPUnit_Framework_TestCase
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
         $this->assertCount(1, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New'], 'Custom'));
-        $this->assertCount(1, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_StaticCall', 'PHPParser_Node_Expr_New'], '\\Custom'));
+        $this->assertCount(
+            1,
+            $this->visitor->getThrowStatements(
+                ['PHPParser_Node_Expr_StaticCall', 'PHPParser_Node_Expr_New'],
+                '\\Custom'
+            )
+        );
     }
 
     public function testGetUseStatements()

@@ -39,7 +39,7 @@ class ExceptionGenerator
             );
         }
 
-        $code = array();
+        $code = [];
         $code[] = '<?php';
         $code[] = 'namespace ' . $this->namespace . ';';
         $code[] = '';
@@ -47,10 +47,13 @@ class ExceptionGenerator
             $code[] = 'use ' . $this->markerInterface . ';';
         }
         if ($parentExceptionClass === $exceptionClass) {
-            $code[] = 'use ' . $exceptionClass . ' as ' . $this->getBaseAlias($exceptionClass, $parentExceptionClass) . ';';
+            $code[] = 'use ' . $exceptionClass
+                . ' as ' . $this->getBaseAlias($exceptionClass, $parentExceptionClass) . ';';
         }
         $code[] = '';
-        $code[] = 'class ' . $exceptionClass . ' extends ' . $this->getBaseAlias($parentExceptionClass, $exceptionClass) . ($this->markerInterface ? ' implements ' . $this->getShortName($this->markerInterface) : '');
+        $code[] = 'class ' . $exceptionClass
+            . ' extends ' . $this->getBaseAlias($parentExceptionClass, $exceptionClass)
+            . ($this->markerInterface ? ' implements ' . $this->getShortName($this->markerInterface) : '');
         $code[] = '{';
         $code[] = '}';
 

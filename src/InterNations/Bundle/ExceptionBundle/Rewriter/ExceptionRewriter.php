@@ -77,7 +77,11 @@ class ExceptionRewriter
         }
 
         $useStatementsProcessed = [];
-        foreach ($exceptionVisitor->getThrowStatements(['PHPParser_Node_Expr_New', 'PHPParser_Node_Expr_StaticCall'], '\\') as $throwStmt) {
+        $throwStmts = $exceptionVisitor->getThrowStatements(
+            ['PHPParser_Node_Expr_New', 'PHPParser_Node_Expr_StaticCall'],
+            '\\'
+        );
+        foreach ($throwStmts as $throwStmt) {
 
             $exceptionClassName = $throwStmt->expr->class->toString();
 
@@ -100,7 +104,11 @@ class ExceptionRewriter
             $throwPosition = $this->getArrayPosition($throwStmt->expr->class);
             $replacement = $namespaceStmt ? $exceptionClassName : $this->prependNamespace($exceptionClassName);
             $originalThrowLine = $lines[$throwPosition];
-            $lines[$throwPosition] = preg_replace($this->getRegex($exceptionClassName), $replacement, $lines[$throwPosition]);
+            $lines[$throwPosition] = preg_replace(
+                $this->getRegex($exceptionClassName),
+                $replacement,
+                $lines[$throwPosition]
+            );
 
             if ($originalThrowLine != $lines[$throwPosition]) {
                 $report->throwStatementsRewritten++;

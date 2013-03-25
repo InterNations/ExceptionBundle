@@ -17,12 +17,29 @@ class GeneratorCommand extends ContainerAwareCommand
         $this
             ->setName('exception:generate')
             ->setDefinition(
-                array(
-                    new InputArgument('target', InputArgument::REQUIRED, 'The target directory. E.g. "app/src/Foo/Bundle/TestBundle"'),
-                    new InputArgument('namespace', InputArgument::REQUIRED, 'The target namespace. E.g. "Foo\Bundle\TestBundle"'),
-                    new InputArgument('marker-interface', InputArgument::REQUIRED, 'Name of the marker interface all exception classes implement. E.g. "ExceptionInterface"'),
-                    new InputArgument('exceptions', InputArgument::IS_ARRAY | InputArgument::REQUIRED, 'Exception classes to be generated ("spl" is a shortcut for all spl exceptions)', array('spl')),
-                )
+                [
+                    new InputArgument(
+                        'target',
+                        InputArgument::REQUIRED,
+                        'The target directory. E.g. "app/src/Foo/Bundle/TestBundle"'
+                    ),
+                    new InputArgument(
+                        'namespace',
+                        InputArgument::REQUIRED,
+                        'The target namespace. E.g. "Foo\Bundle\TestBundle"'
+                    ),
+                    new InputArgument(
+                        'marker-interface',
+                        InputArgument::REQUIRED,
+                        'Name of the marker interface all exception classes implement. E.g. "ExceptionInterface"'
+                    ),
+                    new InputArgument(
+                        'exceptions',
+                        InputArgument::IS_ARRAY | InputArgument::REQUIRED,
+                        'Exception classes to be generated ("spl" is a shortcut for all spl exceptions)',
+                        ['spl']
+                    ),
+                ]
             )
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run exception generation')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force overriding files')
@@ -79,7 +96,10 @@ class GeneratorCommand extends ContainerAwareCommand
             $this->writeFile($input, $output, $markerInterfaceFile, $code);
         }
 
-        $exceptionGenerator = new ExceptionGenerator($namespace, $markerInterface ? $namespace . '\\' . $markerInterface : '');
+        $exceptionGenerator = new ExceptionGenerator(
+            $namespace,
+            $markerInterface ? $namespace . '\\' . $markerInterface : ''
+        );
         foreach ($exceptionClasses as $hierarchy) {
             foreach ($this->getHierarchy($hierarchy) as $parentExceptionClass => $exceptionClass) {
                 $exceptionFile = $this->getClassFile($target, $exceptionClass);
@@ -91,7 +111,7 @@ class GeneratorCommand extends ContainerAwareCommand
 
     protected function getSplExceptionClasses()
     {
-        $exceptionClasses = array();
+        $exceptionClasses = [];
 
         foreach (spl_classes() as $class) {
             $reflected = new ReflectionClass($class);
@@ -110,7 +130,7 @@ class GeneratorCommand extends ContainerAwareCommand
 
     protected function getHierarchy($name)
     {
-        $hierarchy = array();
+        $hierarchy = [];
 
         $previousClassName = null;
         foreach (explode(':', $name) as $className) {

@@ -59,7 +59,7 @@ class ExceptionVisitor extends AbstractNodeVisitor
         if ($expressionTypes !== null) {
             $throwStatements = array_filter(
                 $throwStatements,
-                function ($stmt) use ($expressionTypes) {
+                static function ($stmt) use ($expressionTypes) {
                     foreach ($expressionTypes as $expressionType) {
                         if ($stmt->expr instanceof $expressionType) {
                             return true;

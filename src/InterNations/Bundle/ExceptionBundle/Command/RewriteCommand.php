@@ -18,10 +18,18 @@ class RewriteCommand extends ContainerAwareCommand
         $this
             ->setName('exception:rewrite')
             ->setDefinition(
-                array(
-                    new InputArgument('target', InputArgument::REQUIRED, 'The target directory. E.g. "app/src/Foo/Bundle/TestBundle"'),
-                    new InputArgument('namespace', InputArgument::REQUIRED, 'The target namespace. E.g. "Foo\Bundle\TestBundle"'),
-                )
+                [
+                    new InputArgument(
+                        'target',
+                        InputArgument::REQUIRED,
+                        'The target directory. E.g. "app/src/Foo/Bundle/TestBundle"'
+                    ),
+                    new InputArgument(
+                        'namespace',
+                        InputArgument::REQUIRED,
+                        'The target namespace. E.g. "Foo\Bundle\TestBundle"'
+                    ),
+                ]
             )
             ->addOption('lint', null, InputOption::VALUE_REQUIRED, 'Lint PHP files', true)
             ->setDescription('Rewrites global exception classes to bundle specific exception classes');
@@ -34,7 +42,11 @@ class RewriteCommand extends ContainerAwareCommand
 
         $rewriter = new ExceptionRewriter($namespace);
 
-        foreach (Finder::create()->ignoreVCS(true)->in($target . DIRECTORY_SEPARATOR . 'Exception')->name('*Exception.php') as $exceptionFile) {
+        $files = Finder::create()
+            ->ignoreVCS(true)
+            ->in($target . DIRECTORY_SEPARATOR . 'Exception')
+            ->name('*Exception.php');
+        foreach ($files as $exceptionFile) {
             $exceptionClassName = str_replace('.php', '', $exceptionFile->getFileName());
             $fqExceptionClassName = $namespace . '\\' . $exceptionClassName;
             $rewriter->registerBundleException($fqExceptionClassName);
@@ -73,13 +85,25 @@ class RewriteCommand extends ContainerAwareCommand
         $output->writeln(sprintf('Files analyzed:               %d', $filesAnalyzed));
         $output->writeln(sprintf('Files changed:                %d', count($changeReports)));
         $output->writeln($line);
-        $output->writeln(sprintf('"throw" statements found:     %d', F\sum(F\pluck($changeReports, 'throwStatementsFound'))));
-        $output->writeln(sprintf('"throw" statements rewritten: %d', F\sum(F\pluck($changeReports, 'throwStatementsRewritten'))));
+        $output->writeln(
+            sprintf('"throw" statements found:     %d', F\sum(F\pluck($changeReports, 'throwStatementsFound')))
+        );
+        $output->writeln(
+            sprintf('"throw" statements rewritten: %d', F\sum(F\pluck($changeReports, 'throwStatementsRewritten')))
+        );
         $output->writeln($line);
-        $output->writeln(sprintf('"use" statements found:       %d', F\sum(F\pluck($changeReports, 'useStatementsFound'))));
-        $output->writeln(sprintf('"use" statements rewritten:   %d', F\sum(F\pluck($changeReports, 'useStatementsRewritten'))));
-        $output->writeln(sprintf('"use" statements added:       %d', F\sum(F\pluck($changeReports, 'useStatementsAdded'))));
+        $output->writeln(
+            sprintf('"use" statements found:       %d', F\sum(F\pluck($changeReports, 'useStatementsFound')))
+        );
+        $output->writeln(
+            sprintf('"use" statements rewritten:   %d', F\sum(F\pluck($changeReports, 'useStatementsRewritten')))
+        );
+        $output->writeln(
+            sprintf('"use" statements added:       %d', F\sum(F\pluck($changeReports, 'useStatementsAdded')))
+        );
         $output->writeln($line);
-        $output->writeln(sprintf('"catch" statements found:     %d', F\sum(F\pluck($changeReports, 'catchStatementsFound'))));
+        $output->writeln(
+            sprintf('"catch" statements found:     %d', F\sum(F\pluck($changeReports, 'catchStatementsFound')))
+        );
     }
 }

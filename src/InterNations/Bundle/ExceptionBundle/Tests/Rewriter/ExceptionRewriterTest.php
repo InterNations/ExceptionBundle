@@ -2,8 +2,10 @@
 namespace InterNations\Bundle\ExceptionBundle\Tests\Rewriter;
 
 use InterNations\Bundle\ExceptionBundle\Rewriter\ExceptionRewriter;
+use InterNations\Component\Testing\AbstractTestCase;
+use PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls as ConsecutiveCallsStub;
 
-class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
+class ExceptionRewriterTest extends AbstractTestCase
 {
     /**
      * @var ExceptionRewriter
@@ -37,8 +39,12 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
     {
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException');
+        $this->rewriter->registerBundleException(
+            'InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException'
+        );
+        $this->rewriter->registerBundleException(
+            'InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException'
+        );
 
         $this->mockFileAccess($inputFile, $outputFile);
 
@@ -49,8 +55,12 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
     {
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException');
-        $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException');
+        $this->rewriter->registerBundleException(
+            'InterNations\Bundle\ExceptionTestBundle\Exception\BadMethodCallException'
+        );
+        $this->rewriter->registerBundleException(
+            'InterNations\Bundle\ExceptionTestBundle\Exception\BadFunctionCallException'
+        );
 
         $this->mockFileAccess(
             __DIR__ . '/../Fixtures/Rewriter/ManyExceptions_Input.php',
@@ -77,11 +87,11 @@ class ExceptionRewriterTest extends \PHPUnit_Framework_TestCase
         $this->file
             ->expects($this->any())
             ->method('eof')
-            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($eof));
+            ->will(new ConsecutiveCallsStub($eof));
         $this->file
             ->expects($this->any())
             ->method('fgets')
-            ->will(new \PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($lines));
+            ->will(new ConsecutiveCallsStub($lines));
         $this->file
             ->expects($this->once())
             ->method('seek')

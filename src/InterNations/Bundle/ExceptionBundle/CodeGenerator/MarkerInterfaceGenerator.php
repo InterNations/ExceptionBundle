@@ -12,7 +12,7 @@ class MarkerInterfaceGenerator
 
     public function generate($interface)
     {
-        $code = array();
+        $code = [];
         $code[] = '<?php';
         $code[] = 'namespace ' . $this->namespace . ';';
         $code[] = '';
