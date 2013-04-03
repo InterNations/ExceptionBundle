@@ -17,6 +17,7 @@ use RuntimeException as BaseRuntimeException;
 class RuntimeException extends BaseRuntimeException
 {
 }
+
 EOS;
         $this->assertSame($code, $generator->generate('RuntimeException'));
     }
@@ -34,6 +35,7 @@ use RuntimeException as BaseRuntimeException;
 class RuntimeException extends BaseRuntimeException implements ExceptionInterface
 {
 }
+
 EOS;
         $this->assertSame($code, $generator->generate('RuntimeException'));
     }
@@ -50,6 +52,7 @@ use RuntimeException as BaseRuntimeException;
 class RuntimeException extends BaseRuntimeException implements ExceptionInterface
 {
 }
+
 EOS;
         $this->assertSame($code, $generator->generate('RuntimeException'));
     }

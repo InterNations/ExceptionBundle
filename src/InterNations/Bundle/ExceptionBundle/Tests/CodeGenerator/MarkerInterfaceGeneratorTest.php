@@ -15,6 +15,7 @@ namespace My\Namespace;
 interface MarkerInterface
 {
 }
+
 EOS;
         $this->assertSame($code, $generator->generate('MarkerInterface'));
     }
