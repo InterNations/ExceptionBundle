@@ -57,7 +57,7 @@ class ExceptionGenerator
         $code[] = '{';
         $code[] = '}';
 
-        return join("\n", $code);
+        return implode("\n", $code);
     }
 
     private function getShortName($name)

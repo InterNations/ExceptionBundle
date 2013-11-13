@@ -139,7 +139,7 @@ class ExceptionRewriter
         }
 
         $file->seek(0);
-        $file->fwrite(join('', $lines));
+        $file->fwrite(implode('', $lines));
 
         return $report;
     }
