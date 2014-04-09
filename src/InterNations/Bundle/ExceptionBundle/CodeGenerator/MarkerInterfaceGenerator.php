@@ -19,6 +19,7 @@ class MarkerInterfaceGenerator
         $code[] = 'interface ' . $interface;
         $code[] = '{';
         $code[] = '}';
+        $code[] = '';
 
         return implode("\n", $code);
     }
