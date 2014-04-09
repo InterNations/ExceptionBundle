@@ -56,6 +56,7 @@ class ExceptionGenerator
             . ($this->markerInterface ? ' implements ' . $this->getShortName($this->markerInterface) : '');
         $code[] = '{';
         $code[] = '}';
+        $code[] = '';
 
         return implode("\n", $code);
     }
