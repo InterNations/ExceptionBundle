@@ -17,7 +17,7 @@
 
 ### Generate bundle specific exception subclasses
 
-This command will generate a bunch of exception
+This command will generate a bunch of exceptions
 
 ```
 php app/console exception:generate app/src/MyVendor/MyBundle "MyVendor\MyBundle" ExceptionInterface RuntimeException DomainException
@@ -39,6 +39,7 @@ use RuntimeException as BaseRuntimeException;
 class RuntimeException extends BaseRuntimeException implements ExceptionInterface
 {
 }
+
 ```
 
 You can also specify the shortcut "spl" to subclass all Spl Exceptions
