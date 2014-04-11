@@ -1,4 +1,4 @@
-# ExceptionBundle[![Build Status](https://travis-ci.org/InterNations/ExceptionBundle.svg)](https://travis-ci.org/InterNations/ExceptionBundle)
+# ExceptionBundle[![Build Status](https://travis-ci.org/InterNations/ExceptionBundle.svg)](https://travis-ci.org/InterNations/ExceptionBundle) [![Dependency Status](https://www.versioneye.com/user/projects/53479c5bfe0d0720b5000074/badge.png)](https://www.versioneye.com/user/projects/53479c5bfe0d0720b5000074)
 ## Clean exception handling for your Symfony 2 bundles
 
 `ExceptionBundle` helps you managing the exceptions of your bundle:
