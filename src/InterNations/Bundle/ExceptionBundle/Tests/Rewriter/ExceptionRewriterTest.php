@@ -18,7 +18,7 @@ class ExceptionRewriterTest extends AbstractTestCase
     {
         $this->rewriter = new ExceptionRewriter('InterNations\Bundle\ExceptionTestBundle');
         /** @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/197 */
-        $this->file = $this->getMockBuilder('SplFileObject')
+        $this->file = @$this->getMockBuilder('SplFileObject')
             ->setConstructorArgs(['/dev/null'])
             ->getMock();
     }
