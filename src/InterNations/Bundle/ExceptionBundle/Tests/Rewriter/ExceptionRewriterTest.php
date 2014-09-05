@@ -17,7 +17,7 @@ class ExceptionRewriterTest extends AbstractTestCase
     public function setUp()
     {
         $this->rewriter = new ExceptionRewriter('InterNations\Bundle\ExceptionTestBundle');
-        $this->file = $this->getMockBuilder('SplFileObject')
+        $this->file = @$this->getMockBuilder('SplFileObject')
             ->setConstructorArgs(['/dev/null'])
             ->getMock();
     }
