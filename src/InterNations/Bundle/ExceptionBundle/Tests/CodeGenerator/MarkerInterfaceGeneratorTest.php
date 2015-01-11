@@ -12,8 +12,44 @@ class MarkerInterfaceGeneratorTest extends \PHPUnit_Framework_TestCase
 <?php
 namespace My\Namespace;
 
+use Exception;
+
 interface MarkerInterface
 {
+    /**
+     * @return string
+     */
+    public function getMessage();
+
+    /**
+     * @return mixed
+     */
+    public function getCode();
+
+    /**
+     * @return string
+     */
+    public function getFile();
+
+    /**
+     * @return integer
+     */
+    public function getLine();
+
+    /**
+     * @return array
+     */
+    public function getTrace();
+
+    /**
+     * @return Exception|null
+     */
+    public function getPrevious();
+
+    /**
+     * @return string
+     */
+    public function getTraceAsString();
 }
 
 EOS;
