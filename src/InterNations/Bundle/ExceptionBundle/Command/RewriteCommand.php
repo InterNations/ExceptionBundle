@@ -50,12 +50,7 @@ class RewriteCommand extends ContainerAwareCommand
             $exceptionClassName = str_replace('.php', '', $exceptionFile->getFileName());
             $fqExceptionClassName = $namespace . '\\' . $exceptionClassName;
             $rewriter->registerBundleException($fqExceptionClassName);
-            $output->writeln(
-                sprintf(
-                    '<info>Found bundle specific exception class %s</info>',
-                    $exceptionClassName
-                )
-            );
+            $output->writeln(sprintf('<info>Found bundle specific exception class %s</info>', $exceptionClassName));
         }
 
         $changeReports = [];
