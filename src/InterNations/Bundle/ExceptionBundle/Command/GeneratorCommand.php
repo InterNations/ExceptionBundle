@@ -165,8 +165,8 @@ class GeneratorCommand extends ContainerAwareCommand
             return;
         }
 
-        exec('php -l ' . escapeshellarg($fileName), $output, $retVal);
-        if ($retVal != 0) {
+        exec('php -l ' . escapeshellarg($fileName), $stdOut, $returnValue);
+        if ($returnValue != 0) {
             $output->writeln(sprintf('<error>File %s contains syntax errors</error>', $fileName));
         }
     }
