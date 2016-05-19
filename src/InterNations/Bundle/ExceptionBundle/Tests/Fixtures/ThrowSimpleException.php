@@ -1,5 +1,5 @@
 <?php
-namespace InterNations\Bundle\ExceptionTestBundle;
+namespace InterNations\Bundle\ExceptionTestBundle; // @codingStandardsIgnoreLine
 
 use RuntimeException;
 use BadMethodCallException;

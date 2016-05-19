@@ -18,8 +18,8 @@ class ExceptionRewriterTest extends AbstractTestCase
     public function setUp()
     {
         $this->rewriter = new ExceptionRewriter('InterNations\Bundle\ExceptionTestBundle');
-        /** @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/197 */
-        $this->file = @$this->getMockBuilder('SplFileObject')
+
+        $this->file = $this->getMockBuilder('SplFileObject')
             ->setConstructorArgs(['/dev/null'])
             ->getMock();
     }
@@ -27,8 +27,9 @@ class ExceptionRewriterTest extends AbstractTestCase
     public function getRewriteTestFiles()
     {
         $arguments = [];
+
         foreach (glob(__DIR__ . '/../Fixtures/Rewriter/*_Input.php') as $file) {
-            $arguments[] = [$file, strtr($file, ['_Input.php' => '_Output.php'])];
+            $arguments[$file] = [$file, strtr($file, ['_Input.php' => '_Output.php'])];
         }
 
         return $arguments;

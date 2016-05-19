@@ -1,4 +1,4 @@
-<?php
+<?php // @codingStandardsIgnoreStart
 namespace InterNations\Bundle\ExceptionTestBundle;
 
 use BadMethodCallException,
@@ -35,3 +35,4 @@ class FqException
         }
     }
 }
+// @codingStandardsIgnoreEnd

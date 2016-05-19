@@ -2,8 +2,9 @@
 namespace InterNations\Bundle\ExceptionBundle\Tests\CodeGenerator;
 
 use InterNations\Bundle\ExceptionBundle\CodeGenerator\ExceptionGenerator;
+use PHPUnit_Framework_TestCase as TestCase;
 
-class ExceptionGeneratorTest extends \PHPUnit_Framework_TestCase
+class ExceptionGeneratorTest extends TestCase
 {
     public function testGeneratingExceptionWithoutMarkerInterface()
     {
@@ -57,7 +58,7 @@ EOS;
         $this->assertSame($code, $generator->generate('RuntimeException'));
     }
 
-    public function testExceptionIsThrownForInvalidExceptionClass_1()
+    public function testExceptionIsThrownForInvalidExceptionClass1()
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
         $this->setExpectedException(
@@ -67,7 +68,7 @@ EOS;
         $generator->generate('FooException');
     }
 
-    public function testExceptionIsThrownForInvalidExceptionClass_2()
+    public function testExceptionIsThrownForInvalidExceptionClass2()
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
         $this->setExpectedException(

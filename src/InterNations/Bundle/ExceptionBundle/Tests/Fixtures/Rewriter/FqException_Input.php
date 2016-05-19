@@ -1,4 +1,4 @@
-<?php
+<?php // @codingStandardsIgnoreStart
 namespace InterNations\Bundle\ExceptionTestBundle;
 
 class FqException
@@ -10,3 +10,4 @@ class FqException
 }
 
 throw new \RuntimeException();
+// @codingStandardsIgnoreEnd

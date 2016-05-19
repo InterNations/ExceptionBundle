@@ -1,6 +1,7 @@
-<?php
+<?php // @codingStandardsIgnoreLine
 
-function throw_exception() {
+function throw_exception()
+{
     throw new RuntimeException('Message');
 }
 

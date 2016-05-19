@@ -43,13 +43,16 @@ class ExceptionGenerator
         $code[] = '<?php';
         $code[] = 'namespace ' . $this->namespace . ';';
         $code[] = '';
+
         if ($this->markerInterface && $this->getNamespace($this->markerInterface) !== $this->namespace) {
             $code[] = 'use ' . $this->markerInterface . ';';
         }
+
         if ($parentExceptionClass === $exceptionClass) {
             $code[] = 'use ' . $exceptionClass
                 . ' as ' . $this->getBaseAlias($exceptionClass, $parentExceptionClass) . ';';
         }
+
         $code[] = '';
         $code[] = 'class ' . $exceptionClass
             . ' extends ' . $this->getBaseAlias($parentExceptionClass, $exceptionClass)

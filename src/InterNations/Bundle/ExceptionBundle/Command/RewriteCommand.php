@@ -46,6 +46,7 @@ class RewriteCommand extends ContainerAwareCommand
             ->ignoreVCS(true)
             ->in($target . DIRECTORY_SEPARATOR . 'Exception')
             ->name('*Exception.php');
+        
         foreach ($files as $exceptionFile) {
             $exceptionClassName = str_replace('.php', '', $exceptionFile->getFileName());
             $fqExceptionClassName = $namespace . '\\' . $exceptionClassName;
@@ -55,12 +56,15 @@ class RewriteCommand extends ContainerAwareCommand
 
         $changeReports = [];
         $filesAnalyzed = 0;
+
         foreach (Finder::create()->ignoreVCS(true)->in($target)->name('*.php') as $file) {
             $filesAnalyzed++;
             $report = $rewriter->rewrite(new SplFileObject($file->getPathName(), 'r+'));
+
             if ($report->fileChanged()) {
                 $changeReports[] = $report;
             }
+
             if ($filesAnalyzed % 60 === 0) {
                 $output->writeln('.');
             } else {

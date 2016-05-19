@@ -42,6 +42,7 @@ class ExceptionVisitor extends AbstractNodeVisitor
     {
         if ($node instanceof ThrowStmt) {
             $this->throwStatements[] = $node;
+
             if ($this->currentNamespace) {
                 $node->setAttribute('namespace', $this->currentNamespace);
             }
@@ -65,6 +66,7 @@ class ExceptionVisitor extends AbstractNodeVisitor
                             return true;
                         }
                     }
+
                     return false;
                 }
             );
@@ -104,6 +106,7 @@ class ExceptionVisitor extends AbstractNodeVisitor
         }
 
         $namespace = trim($namespace, '\\');
+
         return strpos($node->toString(), $namespace) === 0;
     }
 }

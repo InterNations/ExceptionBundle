@@ -1,9 +1,9 @@
 <?php
-namespace InterNations\Bundle\ExceptionTestBundle;
+namespace InterNations\Bundle\ExceptionTestBundle; // @codingStandardsIgnoreLine
 
 use RuntimeException;
 
-class UseException
+class UseException // @codingStandardsIgnoreLine
 {
     public function throwException()
     {

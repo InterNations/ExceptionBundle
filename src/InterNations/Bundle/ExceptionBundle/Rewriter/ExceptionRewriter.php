@@ -58,6 +58,7 @@ class ExceptionRewriter
     {
         $lines = [];
         $buffer = '';
+
         while (!$file->eof()) {
             $buffer .= $lines[] = $file->fgets();
         }
@@ -72,6 +73,7 @@ class ExceptionRewriter
         $report = new Report();
         $report->catchStatementsFound = count($exceptionVisitor->getCatchStatements());
         $report->throwStatementsFound = count($exceptionVisitor->getThrowStatements());
+
         foreach ($exceptionVisitor->getUseStatements() as $useStatement) {
             $report->useStatementsFound += count($useStatement->uses);
         }
@@ -81,6 +83,7 @@ class ExceptionRewriter
             ['PHPParser_Node_Expr_New', 'PHPParser_Node_Expr_StaticCall'],
             '\\'
         );
+
         foreach ($throwStmts as $throwStmt) {
 
             $exceptionClassName = $throwStmt->expr->class->toString();

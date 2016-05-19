@@ -1,9 +1,9 @@
 <?php
-namespace InterNations\Bundle\ExceptionTestBundle;
+namespace InterNations\Bundle\ExceptionTestBundle; // @codingStandardsIgnoreLine
 
 use InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException;
 
-class FactoryMethodException
+class FactoryMethodException // @codingStandardsIgnoreLine
 {
     public function throwExceptionFromFactory()
     {

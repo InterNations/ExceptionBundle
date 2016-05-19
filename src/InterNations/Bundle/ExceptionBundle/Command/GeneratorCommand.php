@@ -50,11 +50,13 @@ class GeneratorCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $namespace = trim($input->getArgument('namespace'), '\\');
+
         if (strpos($namespace, '\\Exception') !== strlen($namespace) - strlen('\\Exception')) {
             $namespace .= '\\Exception';
         }
 
         $target = trim($input->getArgument('target'), '/\\');
+
         if (strpos($target, 'Exception') != strlen($namespace) - strlen('Exception')) {
             $target .= DIRECTORY_SEPARATOR . 'Exception';
         }
@@ -62,6 +64,7 @@ class GeneratorCommand extends ContainerAwareCommand
         $dryRun = $input->getOption('dry-run');
 
         $exceptionClasses = $input->getArgument('exceptions');
+
         if (($pos = array_search('spl', $exceptionClasses)) !== false) {
             unset($exceptionClasses[$pos]);
             $exceptionClasses = array_merge($exceptionClasses, $this->getSplExceptionClasses());
@@ -70,6 +73,7 @@ class GeneratorCommand extends ContainerAwareCommand
         if (!file_exists($target)) {
             if (!is_writable(dirname($target))) {
                 $output->writeln('<error>Could not create directory ' . $target . '</error>');
+
                 return;
             }
 
@@ -81,11 +85,13 @@ class GeneratorCommand extends ContainerAwareCommand
 
             if (!$dryRun && !(file_exists($target) && is_dir($target))) {
                 $output->writeln('<error>Could not create directory ' . $target . '</error>');
+
                 return;
             }
         }
 
         $markerInterface = $input->getArgument('marker-interface');
+
         if ($markerInterface) {
 
             $markerInterfaceFile = $this->getClassfile($target, $markerInterface);
@@ -100,6 +106,7 @@ class GeneratorCommand extends ContainerAwareCommand
             $namespace,
             $markerInterface ? $namespace . '\\' . $markerInterface : ''
         );
+
         foreach ($exceptionClasses as $hierarchy) {
             foreach ($this->getHierarchy($hierarchy) as $parentExceptionClass => $exceptionClass) {
                 $exceptionFile = $this->getClassFile($target, $exceptionClass);
@@ -115,6 +122,7 @@ class GeneratorCommand extends ContainerAwareCommand
 
         foreach (spl_classes() as $class) {
             $reflected = new ReflectionClass($class);
+
             if ($reflected->isSubclassOf('Exception')) {
                 $exceptionClasses[] = $class;
             }
@@ -133,6 +141,7 @@ class GeneratorCommand extends ContainerAwareCommand
         $hierarchy = [];
 
         $previousClassName = null;
+
         foreach (explode(':', $name) as $className) {
             $hierarchy[$previousClassName] = $className;
             $previousClassName = $className;
@@ -145,11 +154,13 @@ class GeneratorCommand extends ContainerAwareCommand
     {
         if (!$input->getOption('force') && file_exists($fileName)) {
             $output->writeln(sprintf('<error>Skipping file %s</error>', $fileName));
+
             return;
         }
 
         if ($input->getOption('dry-run')) {
             $output->writeln(sprintf('<info>Writing %s (dry run)</info>', $fileName));
+
             return;
         }
 
@@ -158,6 +169,7 @@ class GeneratorCommand extends ContainerAwareCommand
 
         if (!file_exists($fileName)) {
             $output->writeln(sprintf('<error>Could not write file %s</error>', $fileName));
+
             return;
         }
 
@@ -166,6 +178,7 @@ class GeneratorCommand extends ContainerAwareCommand
         }
 
         exec('php -l ' . escapeshellarg($fileName), $stdOut, $returnValue);
+
         if ($returnValue != 0) {
             $output->writeln(sprintf('<error>File %s contains syntax errors</error>', $fileName));
         }

@@ -39,7 +39,9 @@ class ExceptionVisitorTest extends AbstractTestCase
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
 
         $this->assertCount(8, $this->visitor->getThrowStatements());
+
         $asserted = true;
+
         foreach ($this->visitor->getThrowStatements() as $stmt) {
             $this->assertInstanceOf('PHPParser_Node_Stmt_Throw', $stmt);
             $this->assertSame(
