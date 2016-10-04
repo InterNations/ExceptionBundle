@@ -88,11 +88,9 @@ class ExceptionRewriterTest extends AbstractTestCase
         $eof = array_fill(0, count($lines), false);
         $eof[] = true;
         $this->file
-            ->expects($this->any())
             ->method('eof')
             ->will(new ConsecutiveCallsStub($eof));
         $this->file
-            ->expects($this->any())
             ->method('fgets')
             ->will(new ConsecutiveCallsStub($lines));
         $this->file
