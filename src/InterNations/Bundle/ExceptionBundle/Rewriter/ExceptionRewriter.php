@@ -1,36 +1,30 @@
 <?php
 namespace InterNations\Bundle\ExceptionBundle\Rewriter;
 
+use InterNations\Bundle\ExceptionBundle\Factory\ParserFactory;
+use PhpParser\Node\Expr\StaticCall as StaticCallExpression;
+use PhpParser\Parser;
 use SplFileObject;
-use PHPParser_Parser as Parser;
-use PHPParser_Lexer as Lexer;
-use PHPParser_NodeTraverser as NodeTraverser;
-use PHPParser_NodeVisitor_NameResolver as NameResolverVisitor;
-use PHPParser_NodeAbstract as AbstractNode;
-use PHPParser_Node_Stmt_Use as UseStmt;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver as NameResolverVisitor;
+use PhpParser\NodeAbstract as AbstractNode;
+use PhpParser\Node\Stmt\Use_ as UseStatement;
+use PhpParser\Node\Expr\New_ as NewExpression;
 use InterNations\Bundle\ExceptionBundle\Visitor\ExceptionVisitor;
 use InterNations\Bundle\ExceptionBundle\Value\Report;
 
 class ExceptionRewriter
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $bundleExceptions = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $specializedExceptions = [];
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $bundleNamespace;
 
-    /**
-     * @var Parser
-     */
+    /** @var Parser */
     private $parser;
 
     /**
@@ -39,7 +33,7 @@ class ExceptionRewriter
     public function __construct($bundleNamespace)
     {
         $this->bundleNamespace = $bundleNamespace;
-        $this->parser = new Parser(new Lexer());
+        $this->parser = ParserFactory::createParser();
     }
 
     public function registerBundleException($exceptionClassName)
@@ -79,12 +73,12 @@ class ExceptionRewriter
         }
 
         $useStatementsProcessed = [];
-        $throwStmts = $exceptionVisitor->getThrowStatements(
-            ['PHPParser_Node_Expr_New', 'PHPParser_Node_Expr_StaticCall'],
+        $throwStatements = $exceptionVisitor->getThrowStatements(
+            [NewExpression::class, StaticCallExpression::class],
             '\\'
         );
 
-        foreach ($throwStmts as $throwStmt) {
+        foreach ($throwStatements as $throwStmt) {
 
             $exceptionClassName = $throwStmt->expr->class->toString();
 
@@ -93,9 +87,9 @@ class ExceptionRewriter
             }
 
             $useStatementFound = false;
-            /** @var $useStmt UseStmt */
-            foreach ($exceptionVisitor->getUseStatements() as $useStmt) {
-                foreach ($useStmt->uses as $usageStmt) {
+            /** @var $useStatement UseStatement */
+            foreach ($exceptionVisitor->getUseStatements() as $useStatement) {
+                foreach ($useStatement->uses as $usageStmt) {
                     if ($usageStmt->name->toString() === $exceptionClassName) {
                         $useStatementFound = true;
                         break 2;

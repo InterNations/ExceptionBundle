@@ -1,54 +1,46 @@
 <?php
 namespace InterNations\Bundle\ExceptionBundle\Visitor;
 
-use PHPParser_NodeVisitorAbstract as AbstractNodeVisitor;
-use PHPParser_Node as Node;
-use PHPParser_Node_Stmt_Throw as ThrowStmt;
-use PHPParser_Node_Stmt_Catch as CatchStmt;
-use PHPParser_Node_Stmt_Use as UseStmt;
-use PHPParser_Node_Stmt_Namespace as NamespaceStmt;
-use PHPParser_Node_Name_FullyQualified as FullyQualifiedName;
+use PhpParser\Node;
+use PhpParser\NodeVisitorAbstract as AbstractNodeVisitor;
+use PhpParser\Node\Stmt\Throw_ as ThrowStatement;
+use PhpParser\Node\Stmt\Catch_ as CatchStatement;
+use PhpParser\Node\Stmt\Use_ as UseStatement;
+use PhpParser\Node\Stmt\Namespace_ as NamespaceStatement;
+use PhpParser\Node\Name\FullyQualified as FullyQualifiedName;
 
 class ExceptionVisitor extends AbstractNodeVisitor
 {
-    /**
-     * @var UseStmt[]
-     */
+    /** @var UseStatement[] */
     private $useStatements = [];
 
-    /**
-     * @var ThrowStmt[]
-     */
+    /** @var ThrowStatement[] */
     private $throwStatements = [];
 
-    /**
-     * @var CatchStmt[]
-     */
+    /** @var CatchStatement[] */
     private $catchStatements = [];
 
-    /**
-     * @var NamespaceStmt
-     */
+    /** @var NamespaceStatement */
     private $currentNamespace;
 
     public function enterNode(Node $node)
     {
-        if ($node instanceof NamespaceStmt) {
+        if ($node instanceof NamespaceStatement) {
             $this->currentNamespace = $node;
         }
     }
 
     public function leaveNode(Node $node)
     {
-        if ($node instanceof ThrowStmt) {
+        if ($node instanceof ThrowStatement) {
             $this->throwStatements[] = $node;
 
             if ($this->currentNamespace) {
                 $node->setAttribute('namespace', $this->currentNamespace);
             }
-        } elseif ($node instanceof UseStmt) {
+        } elseif ($node instanceof UseStatement) {
             $this->useStatements[] = $node;
-        } elseif ($node instanceof CatchStmt) {
+        } elseif ($node instanceof CatchStatement) {
             $this->catchStatements[] = $node;
         }
     }

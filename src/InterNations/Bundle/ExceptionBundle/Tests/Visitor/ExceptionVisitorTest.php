@@ -1,34 +1,31 @@
 <?php
 namespace InterNations\Bundle\ExceptionBundle\Tests\Visitor;
 
+use InterNations\Bundle\ExceptionBundle\Factory\ParserFactory;
 use InterNations\Bundle\ExceptionBundle\Visitor\ExceptionVisitor;
 use InterNations\Component\Testing\AbstractTestCase;
-use PHPParser_Parser as Parser;
-use PHPParser_Lexer as Lexer;
-use PHPParser_NodeTraverser as NodeTraverser;
-use PHPParser_NodeVisitor_NameResolver as NameResolverVisitor;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver as NameResolverVisitor;
+use PhpParser\Node\Stmt\Throw_ as ThrowStatement;
+use PhpParser\Node\Expr\New_ as NewExpression;
+use PhpParser\Node\Expr\StaticCall as StaticCallExpression;
+use PhpParser\Parser;
 
 class ExceptionVisitorTest extends AbstractTestCase
 {
-    /**
-     * @var ExceptionVisitor
-     */
+    /** @var ExceptionVisitor */
     private $visitor;
 
-    /**
-     * @var Parser
-     */
+    /** @var Parser */
     private $parser;
 
-    /**
-     * @var NodeTraverser
-     */
+    /** @var NodeTraverser */
     private $traverser;
 
     public function setUp()
     {
         $this->visitor = new ExceptionVisitor();
-        $this->parser = new Parser(new Lexer());
+        $this->parser = ParserFactory::createParser();
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor(new NameResolverVisitor());
         $this->traverser->addVisitor($this->visitor);
@@ -43,9 +40,9 @@ class ExceptionVisitorTest extends AbstractTestCase
         $asserted = true;
 
         foreach ($this->visitor->getThrowStatements() as $stmt) {
-            $this->assertInstanceOf('PHPParser_Node_Stmt_Throw', $stmt);
+            $this->assertInstanceOf(ThrowStatement::class, $stmt);
             $this->assertSame(
-                'InterNations\\Bundle\\ExceptionTestBundle',
+                \InterNations\Bundle\ExceptionTestBundle::class,
                 $stmt->getAttribute('namespace')->name->toString('\\')
             );
             $asserted = true;
@@ -56,23 +53,23 @@ class ExceptionVisitorTest extends AbstractTestCase
     public function testFilterThrowStatementsByExpression()
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(7, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New']));
+        $this->assertCount(7, $this->visitor->getThrowStatements([NewExpression::class]));
     }
 
     public function testFilterThrowStatementsByGlobalNamespaceAndExpression()
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(5, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New'], '\\'));
+        $this->assertCount(5, $this->visitor->getThrowStatements([NewExpression::class], '\\'));
     }
 
     public function testFilterThrowStatementsBySpecificNamespaceAndExpression()
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(1, $this->visitor->getThrowStatements(['PHPParser_Node_Expr_New'], 'Custom'));
+        $this->assertCount(1, $this->visitor->getThrowStatements([NewExpression::class], 'Custom'));
         $this->assertCount(
             1,
             $this->visitor->getThrowStatements(
-                ['PHPParser_Node_Expr_StaticCall', 'PHPParser_Node_Expr_New'],
+                [StaticCallExpression::class, NewExpression::class],
                 '\\Custom'
             )
         );
