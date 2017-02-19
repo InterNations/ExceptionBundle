@@ -6,7 +6,8 @@
         "symfony/finder": "~3",
         "symfony/console": "~3",
         "nikic/php-parser": "~2",
-        "lstrojny/functional-php": "dev-master"
+        "lstrojny/functional-php": "dev-master",
+        "php": "~7"
     },
     "authors": [
         {
