@@ -42,7 +42,7 @@ class ExceptionVisitorTest extends AbstractTestCase
         foreach ($this->visitor->getThrowStatements() as $stmt) {
             $this->assertInstanceOf(ThrowStatement::class, $stmt);
             $this->assertSame(
-                \InterNations\Bundle\ExceptionTestBundle::class,
+                'InterNations\Bundle\ExceptionTestBundle',
                 $stmt->getAttribute('namespace')->name->toString('\\')
             );
             $asserted = true;
@@ -68,10 +68,7 @@ class ExceptionVisitorTest extends AbstractTestCase
         $this->assertCount(1, $this->visitor->getThrowStatements([NewExpression::class], 'Custom'));
         $this->assertCount(
             1,
-            $this->visitor->getThrowStatements(
-                [StaticCallExpression::class, NewExpression::class],
-                '\\Custom'
-            )
+            $this->visitor->getThrowStatements([StaticCallExpression::class, NewExpression::class], '\\Custom')
         );
     }
 
