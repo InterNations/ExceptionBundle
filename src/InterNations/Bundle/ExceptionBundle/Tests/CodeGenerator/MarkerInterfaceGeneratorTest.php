@@ -2,7 +2,7 @@
 namespace InterNations\Bundle\ExceptionBundle\Tests\CodeGenerator;
 
 use InterNations\Bundle\ExceptionBundle\CodeGenerator\MarkerInterfaceGenerator;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class MarkerInterfaceGeneratorTest extends TestCase
 {

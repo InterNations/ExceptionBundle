@@ -3,8 +3,8 @@
     "description": "Helps making your Symfony Bundle a good Exception citizen. Yes, it’s opinionated.",
     "license": "MIT",
     "require": {
-        "symfony/finder": ">=2.1",
-        "symfony/console": ">=2.1",
+        "symfony/finder": "~3",
+        "symfony/console": "~3",
         "nikic/php-parser": "~2",
         "lstrojny/functional-php": "dev-master"
     },
@@ -24,6 +24,6 @@
     "require-dev": {
         "internations/kodierungsregelwerksammlung": "dev-master",
         "internations/testing-component": "dev-master",
-        "phpunit/phpunit": "~4|~5"
+        "phpunit/phpunit": "~6"
     }
 }

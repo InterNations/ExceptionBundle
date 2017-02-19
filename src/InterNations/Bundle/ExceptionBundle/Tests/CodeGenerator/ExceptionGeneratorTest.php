@@ -2,7 +2,7 @@
 namespace InterNations\Bundle\ExceptionBundle\Tests\CodeGenerator;
 
 use InterNations\Bundle\ExceptionBundle\CodeGenerator\ExceptionGenerator;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ExceptionGeneratorTest extends TestCase
 {
@@ -61,20 +61,16 @@ EOS;
     public function testExceptionIsThrownForInvalidExceptionClass1()
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
-        $this->setExpectedException(
-            'RuntimeException',
-            'Given exception base class "FooException" is not a child class of "Exception"'
-        );
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Given exception base class "FooException" is not a child class of "Exception"');
         $generator->generate('FooException');
     }
 
     public function testExceptionIsThrownForInvalidExceptionClass2()
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
-        $this->setExpectedException(
-            'RuntimeException',
-            'Given exception base class "stdClass" is not a child class of "Exception"'
-        );
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Given exception base class "stdClass" is not a child class of "Exception"');
         $generator->generate('stdClass');
     }
 }
