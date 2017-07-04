@@ -5,7 +5,7 @@
     "require": {
         "symfony/finder": "~3",
         "symfony/console": "~3",
-        "nikic/php-parser": "~2",
+        "nikic/php-parser": "~2|~3",
         "lstrojny/functional-php": "dev-master",
         "php": "~7"
     },
