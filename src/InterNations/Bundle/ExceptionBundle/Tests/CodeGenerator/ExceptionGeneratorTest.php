@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExceptionGeneratorTest extends TestCase
 {
-    public function testGeneratingExceptionWithoutMarkerInterface()
+    public function testGeneratingExceptionWithoutMarkerInterface(): void
     {
         $generator = new ExceptionGenerator('My\Namespace');
         $code = <<<'EOS'
@@ -20,10 +20,10 @@ class RuntimeException extends BaseRuntimeException
 }
 
 EOS;
-        $this->assertSame($code, $generator->generate('RuntimeException'));
+        self::assertSame($code, $generator->generate('RuntimeException'));
     }
 
-    public function testGeneratingExceptionWithMarkerInterfaceInDifferentNamespace()
+    public function testGeneratingExceptionWithMarkerInterfaceInDifferentNamespace(): void
     {
         $generator = new ExceptionGenerator('My\Namespace', 'Another\Namespace\ExceptionInterface');
         $code = <<<'EOS'
@@ -38,10 +38,10 @@ class RuntimeException extends BaseRuntimeException implements ExceptionInterfac
 }
 
 EOS;
-        $this->assertSame($code, $generator->generate('RuntimeException'));
+        self::assertSame($code, $generator->generate('RuntimeException'));
     }
 
-    public function testGeneratingExceptionInTheSameNamespace()
+    public function testGeneratingExceptionInTheSameNamespace(): void
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
         $code = <<<'EOS'
@@ -55,10 +55,10 @@ class RuntimeException extends BaseRuntimeException implements ExceptionInterfac
 }
 
 EOS;
-        $this->assertSame($code, $generator->generate('RuntimeException'));
+        self::assertSame($code, $generator->generate('RuntimeException'));
     }
 
-    public function testExceptionIsThrownForInvalidExceptionClass1()
+    public function testExceptionIsThrownForInvalidExceptionClass1(): void
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
         $this->expectException('RuntimeException');
@@ -66,7 +66,7 @@ EOS;
         $generator->generate('FooException');
     }
 
-    public function testExceptionIsThrownForInvalidExceptionClass2()
+    public function testExceptionIsThrownForInvalidExceptionClass2(): void
     {
         $generator = new ExceptionGenerator('My\Namespace', 'My\Namespace\ExceptionInterface');
         $this->expectException('RuntimeException');

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class MarkerInterfaceGeneratorTest extends TestCase
 {
-    public function testGeneratorMarkerInterface()
+    public function testGeneratorMarkerInterface(): void
     {
         $generator = new MarkerInterfaceGenerator('My\Namespace');
         $code = <<<'EOS'
@@ -54,6 +54,6 @@ interface MarkerInterface
 }
 
 EOS;
-        $this->assertSame($code, $generator->generate('MarkerInterface'));
+        self::assertSame($code, $generator->generate('MarkerInterface'));
     }
 }

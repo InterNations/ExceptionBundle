@@ -22,7 +22,7 @@ class ExceptionVisitorTest extends AbstractTestCase
     /** @var NodeTraverser */
     private $traverser;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->visitor = new ExceptionVisitor();
         $this->parser = ParserFactory::createParser();
@@ -31,54 +31,54 @@ class ExceptionVisitorTest extends AbstractTestCase
         $this->traverser->addVisitor($this->visitor);
     }
 
-    public function testVisitingThrowStatements()
+    public function testVisitingThrowStatements(): void
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
 
-        $this->assertCount(8, $this->visitor->getThrowStatements());
+        self::assertCount(8, $this->visitor->getThrowStatements());
 
         $asserted = true;
 
         foreach ($this->visitor->getThrowStatements() as $stmt) {
-            $this->assertInstanceOf(ThrowStatement::class, $stmt);
-            $this->assertSame(
+            self::assertInstanceOf(ThrowStatement::class, $stmt);
+            self::assertSame(
                 'InterNations\Bundle\ExceptionTestBundle',
                 $stmt->getAttribute('namespace')->name->toString('\\')
             );
             $asserted = true;
         }
-        $this->assertTrue($asserted);
+        self::assertTrue($asserted);
     }
 
-    public function testFilterThrowStatementsByExpression()
+    public function testFilterThrowStatementsByExpression(): void
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(7, $this->visitor->getThrowStatements([NewExpression::class]));
+        self::assertCount(7, $this->visitor->getThrowStatements([NewExpression::class]));
     }
 
-    public function testFilterThrowStatementsByGlobalNamespaceAndExpression()
+    public function testFilterThrowStatementsByGlobalNamespaceAndExpression(): void
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(5, $this->visitor->getThrowStatements([NewExpression::class], '\\'));
+        self::assertCount(5, $this->visitor->getThrowStatements([NewExpression::class], '\\'));
     }
 
-    public function testFilterThrowStatementsBySpecificNamespaceAndExpression()
+    public function testFilterThrowStatementsBySpecificNamespaceAndExpression(): void
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(1, $this->visitor->getThrowStatements([NewExpression::class], 'Custom'));
-        $this->assertCount(
+        self::assertCount(1, $this->visitor->getThrowStatements([NewExpression::class], 'Custom'));
+        self::assertCount(
             1,
             $this->visitor->getThrowStatements([StaticCallExpression::class, NewExpression::class], '\\Custom')
         );
     }
 
-    public function testGetUseStatements()
+    public function testGetUseStatements(): void
     {
         $this->traverseFile(__DIR__ . '/../Fixtures/ThrowSimpleException.php');
-        $this->assertCount(3, $this->visitor->getUseStatements());
+        self::assertCount(3, $this->visitor->getUseStatements());
     }
 
-    private function traverseFile($file)
+    private function traverseFile(string $file): void
     {
         $statements = $this->parser->parse(file_get_contents($file));
         $this->traverser->traverse($statements);

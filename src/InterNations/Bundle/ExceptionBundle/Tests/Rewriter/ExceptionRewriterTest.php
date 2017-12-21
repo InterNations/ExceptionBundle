@@ -15,7 +15,7 @@ class ExceptionRewriterTest extends AbstractTestCase
 
     private $file;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->rewriter = new ExceptionRewriter('InterNations\Bundle\ExceptionTestBundle');
 
@@ -24,7 +24,8 @@ class ExceptionRewriterTest extends AbstractTestCase
             ->getMock();
     }
 
-    public function getRewriteTestFiles()
+    /** @return array[] */
+    public static function getRewriteTestFiles(): array
     {
         $arguments = [];
 
@@ -38,7 +39,7 @@ class ExceptionRewriterTest extends AbstractTestCase
     /**
      * @dataProvider getRewriteTestFiles
      */
-    public function testRewritingFqExceptions($inputFile, $outputFile)
+    public function testRewritingFqExceptions(string $inputFile, string $outputFile): void
     {
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
@@ -54,7 +55,7 @@ class ExceptionRewriterTest extends AbstractTestCase
         $this->rewriter->rewrite($this->file);
     }
 
-    public function testReportReturned()
+    public function testReportReturned(): void
     {
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException');
         $this->rewriter->registerBundleException('InterNations\Bundle\ExceptionTestBundle\Exception\LogicException');
@@ -72,17 +73,17 @@ class ExceptionRewriterTest extends AbstractTestCase
 
         $report = $this->rewriter->rewrite($this->file);
 
-        $this->assertSame(4, $report->throwStatementsFound);
-        $this->assertSame(2, $report->throwStatementsRewritten);
+        self::assertSame(4, $report->throwStatementsFound);
+        self::assertSame(2, $report->throwStatementsRewritten);
 
-        $this->assertSame(3, $report->useStatementsFound);
-        $this->assertSame(2, $report->useStatementsRewritten);
-        $this->assertSame(1, $report->useStatementsAdded);
+        self::assertSame(3, $report->useStatementsFound);
+        self::assertSame(2, $report->useStatementsRewritten);
+        self::assertSame(1, $report->useStatementsAdded);
 
-        $this->assertSame(1, $report->catchStatementsFound);
+        self::assertSame(1, $report->catchStatementsFound);
     }
 
-    private function mockFileAccess($inputFile, $outputFile)
+    private function mockFileAccess(string $inputFile, string $outputFile): void
     {
         $lines = file($inputFile);
         $eof = array_fill(0, count($lines), false);
@@ -94,11 +95,11 @@ class ExceptionRewriterTest extends AbstractTestCase
             ->method('fgets')
             ->will(new ConsecutiveCallsStub($lines));
         $this->file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('seek')
             ->with(0);
         $this->file
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('fwrite')
             ->with(file_get_contents($outputFile));
     }
