@@ -15,7 +15,7 @@ class Report
 
     public $catchStatementsFound = 0;
 
-    public function fileChanged()
+    public function fileChanged(): bool
     {
         return $this->throwStatementsRewritten > 0
             || $this->useStatementsRewritten > 0

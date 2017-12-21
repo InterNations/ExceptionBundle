@@ -23,14 +23,14 @@ class ExceptionVisitor extends AbstractNodeVisitor
     /** @var NamespaceStatement */
     private $currentNamespace;
 
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): void
     {
         if ($node instanceof NamespaceStatement) {
             $this->currentNamespace = $node;
         }
     }
 
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         if ($node instanceof ThrowStatement) {
             $this->throwStatements[] = $node;
@@ -45,7 +45,11 @@ class ExceptionVisitor extends AbstractNodeVisitor
         }
     }
 
-    public function getThrowStatements(array $expressionTypes = null, $namespace = null)
+    /**
+     * @param string[] $expressionTypes
+     * @return string[]
+     */
+    public function getThrowStatements(?array $expressionTypes = null, ?string $namespace = null): array
     {
         $throwStatements = $this->throwStatements;
 
@@ -76,17 +80,19 @@ class ExceptionVisitor extends AbstractNodeVisitor
         return $throwStatements;
     }
 
-    public function getUseStatements()
+    /** @return string[] */
+    public function getUseStatements(): array
     {
         return $this->useStatements;
     }
 
-    public function getCatchStatements()
+    /** @return string[] */
+    public function getCatchStatements(): array
     {
         return $this->catchStatements;
     }
 
-    private function isInNamespace($namespace, Node $node)
+    private function isInNamespace(string $namespace, Node $node): bool
     {
         if (!$node instanceof FullyQualifiedName) {
             return false;

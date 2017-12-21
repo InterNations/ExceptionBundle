@@ -3,7 +3,7 @@ namespace InterNations\Bundle\ExceptionBundle\Tests\Rewriter;
 
 use InterNations\Bundle\ExceptionBundle\Rewriter\ExceptionRewriter;
 use InterNations\Component\Testing\AbstractTestCase;
-use PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls as ConsecutiveCallsStub;
+use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls as ConsecutiveCallsStub;
 
 /** @large */
 class ExceptionRewriterTest extends AbstractTestCase

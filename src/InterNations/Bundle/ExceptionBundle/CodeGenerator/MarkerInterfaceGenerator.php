@@ -5,45 +5,64 @@ class MarkerInterfaceGenerator
 {
     private $namespace;
 
-    public function __construct($namespace)
+    public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
     }
 
-    public function generate($interface)
+    public function generate(string $interface): string
     {
-        $code = [];
-        $code[] = '<?php';
-        $code[] = 'namespace ' . $this->namespace . ';';
-        $code[] = '';
-        $code[] = 'use Exception;';
-        $code[] = '';
-        $code[] = 'interface ' . $interface;
-        $code[] = '{';
-        static::declareMethod($code, 'getMessage', 'string');
-        $code[] = '';
-        static::declareMethod($code, 'getCode', 'mixed');
-        $code[] = '';
-        static::declareMethod($code, 'getFile', 'string');
-        $code[] = '';
-        static::declareMethod($code, 'getLine', 'integer');
-        $code[] = '';
-        static::declareMethod($code, 'getTrace', 'array');
-        $code[] = '';
-        static::declareMethod($code, 'getPrevious', 'Exception|null');
-        $code[] = '';
-        static::declareMethod($code, 'getTraceAsString', 'string');
-        $code[] = '}';
-        $code[] = '';
-
-        return implode("\n", $code);
+        return self::linesToString(
+            [
+                '<?php',
+                'namespace ' . $this->namespace . ';',
+                '',
+                'use Exception;',
+                '',
+                'interface ' . $interface,
+                '{',
+                static::declareMethod('getMessage', 'string'),
+                '',
+                static::declareMethod('getCode', 'mixed'),
+                '',
+                static::declareMethod('getFile', 'string'),
+                '',
+                static::declareMethod('getLine', 'integer'),
+                '',
+                static::declareMethod('getTrace', 'array'),
+                '',
+                static::declareMethod('getPrevious', 'Exception|null'),
+                '',
+                static::declareMethod('getTraceAsString', 'string'),
+                '}',
+                '',
+            ]
+        );
     }
 
-    private static function declareMethod(array &$code, $method, $returnType)
+    /** @return string[] */
+    private static function declareMethod(string $method, string $returnType): array
     {
-        $code[] = '    /**';
-        $code[] = '     * @return ' . $returnType;
-        $code[] = '     */';
-        $code[] = '    public function ' . $method . '();';
+        return [
+            '    /**',
+            '     * @return ' . $returnType,
+            '     */',
+            '    public function ' . $method . '();',
+        ];
+    }
+
+    /** @param string[] $lines */
+    private static function linesToString(array $lines): string
+    {
+        return implode(
+            "\n",
+            array_reduce(
+                $lines,
+                static function (array $carry, $value) {
+                    return array_merge($carry, is_array($value) ? $value : [$value]);
+                },
+                []
+            )
+        );
     }
 }

@@ -8,16 +8,15 @@ use ReflectionException;
 class ExceptionGenerator
 {
     private $namespace;
-
     private $markerInterface;
 
-    public function __construct($namespace, $exceptionInterfaceName = null)
+    public function __construct(string $namespace, ?string $exceptionInterfaceName = null)
     {
         $this->namespace = $namespace;
         $this->markerInterface = $exceptionInterfaceName;
     }
 
-    public function generate($exceptionClass, $parentExceptionClass = null)
+    public function generate(string $exceptionClass, ?string $parentExceptionClass = null): string
     {
         $parentExceptionClass = $parentExceptionClass ?: $exceptionClass;
 
@@ -64,17 +63,17 @@ class ExceptionGenerator
         return implode("\n", $code);
     }
 
-    private function getShortName($name)
+    private function getShortName(string $name): string
     {
         return substr($name, strrpos($name, '\\') + 1);
     }
 
-    private function getNamespace($namespace)
+    private function getNamespace(string $namespace): string
     {
         return substr($namespace, 0, strrpos($namespace, '\\'));
     }
 
-    protected function getBaseAlias($parentExceptionClass, $exceptionClass)
+    protected function getBaseAlias(string $parentExceptionClass, string $exceptionClass): string
     {
         if ($parentExceptionClass !== $exceptionClass) {
             return $parentExceptionClass;

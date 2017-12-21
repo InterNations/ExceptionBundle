@@ -27,28 +27,19 @@ class ExceptionRewriter
     /** @var Parser */
     private $parser;
 
-    /**
-     * @param string $bundleNamespace
-     */
-    public function __construct($bundleNamespace)
+    public function __construct(string $bundleNamespace)
     {
         $this->bundleNamespace = $bundleNamespace;
         $this->parser = ParserFactory::createParser();
     }
 
-    public function registerBundleException($exceptionClassName)
+    public function registerBundleException(string $exceptionClassName): void
     {
         $this->bundleExceptions[] = $exceptionClassName;
         $this->specializedExceptions[] = substr($exceptionClassName, strrpos($exceptionClassName, '\\') + 1);
     }
 
-    /**
-     * Rewrite exceptions in $file
-     *
-     * @param SplFileObject $file
-     * @return Report
-     */
-    public function rewrite(SplFileObject $file)
+    public function rewrite(SplFileObject $file): Report
     {
         $lines = [];
         $buffer = '';
@@ -141,22 +132,22 @@ class ExceptionRewriter
         return $report;
     }
 
-    protected function getBundleExceptionNamespace()
+    protected function getBundleExceptionNamespace(): string
     {
         return $this->bundleNamespace . '\\' . 'Exception';
     }
 
-    protected function prependNamespace($className)
+    protected function prependNamespace(string $className): string
     {
         return sprintf('%s\\%s', $this->getBundleExceptionNamespace(), $className);
     }
 
-    protected function getRegex($name)
+    protected function getRegex(string $name): string
     {
         return '/\\\\?' . preg_quote($name, '/') . '/';
     }
 
-    protected function getArrayPosition(AbstractNode $node)
+    protected function getArrayPosition(AbstractNode $node): int
     {
         $startLine = $node->getAttribute('startLine');
         $endLine = $node->getAttribute('endLine');
@@ -167,8 +158,8 @@ class ExceptionRewriter
         return $startLine - 1;
     }
 
-    protected function hasSpecializedException($exceptionClassName)
+    protected function hasSpecializedException(string $exceptionClassName): bool
     {
-        return in_array($exceptionClassName, $this->specializedExceptions);
+        return in_array($exceptionClassName, $this->specializedExceptions, true);
     }
 }

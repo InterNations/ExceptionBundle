@@ -6,8 +6,7 @@ use PhpParser\Parser;
 
 final class ParserFactory
 {
-    /** @return Parser */
-    public static function createParser()
+    public static function createParser(): Parser
     {
         return new Parser\Multiple([new Parser\Php7(new Emulative()), new Parser\Php5(new Emulative())]);
     }

@@ -1,7 +1,7 @@
 <?php
 namespace InterNations\Bundle\ExceptionBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,9 +10,9 @@ use InterNations\Bundle\ExceptionBundle\CodeGenerator\ExceptionGenerator;
 use InterNations\Bundle\ExceptionBundle\CodeGenerator\MarkerInterfaceGenerator;
 use ReflectionClass;
 
-class GeneratorCommand extends ContainerAwareCommand
+class GeneratorCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('exception:generate')
@@ -47,7 +47,7 @@ class GeneratorCommand extends ContainerAwareCommand
             ->setDescription('Generates bundle specific exception base classes');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $namespace = trim($input->getArgument('namespace'), '\\');
 
@@ -116,7 +116,8 @@ class GeneratorCommand extends ContainerAwareCommand
         }
     }
 
-    protected function getSplExceptionClasses()
+    /** @return string[] */
+    private function getSplExceptionClasses(): array
     {
         $exceptionClasses = [];
 
@@ -131,12 +132,13 @@ class GeneratorCommand extends ContainerAwareCommand
         return $exceptionClasses;
     }
 
-    protected function getClassFile($target, $className)
+    private function getClassFile(string $target, string $className): string
     {
         return sprintf('%s%s%s.php', $target, DIRECTORY_SEPARATOR, $className);
     }
 
-    protected function getHierarchy($name)
+    /** @return string[] */
+    private function getHierarchy(string $name): array
     {
         $hierarchy = [];
 
@@ -150,7 +152,7 @@ class GeneratorCommand extends ContainerAwareCommand
         return $hierarchy;
     }
 
-    private function writeFile(InputInterface $input, OutputInterface $output, $fileName, $content)
+    private function writeFile(InputInterface $input, OutputInterface $output, string $fileName, string $content): void
     {
         if (!$input->getOption('force') && file_exists($fileName)) {
             $output->writeln(sprintf('<error>Skipping file %s</error>', $fileName));

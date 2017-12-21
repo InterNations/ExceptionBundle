@@ -1,7 +1,7 @@
 <?php
 namespace InterNations\Bundle\ExceptionBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,9 +11,9 @@ use Symfony\Component\Finder\Finder;
 use SplFileObject;
 use Functional as F;
 
-class RewriteCommand extends ContainerAwareCommand
+class RewriteCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('exception:rewrite')
@@ -35,7 +35,7 @@ class RewriteCommand extends ContainerAwareCommand
             ->setDescription('Rewrites global exception classes to bundle specific exception classes');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $namespace = trim($input->getArgument('namespace'), '\\');
         $target = trim($input->getArgument('target'), '/\\');
@@ -46,7 +46,7 @@ class RewriteCommand extends ContainerAwareCommand
             ->ignoreVCS(true)
             ->in($target . DIRECTORY_SEPARATOR . 'Exception')
             ->name('*Exception.php');
-        
+
         foreach ($files as $exceptionFile) {
             $exceptionClassName = str_replace('.php', '', $exceptionFile->getFileName());
             $fqExceptionClassName = $namespace . '\\' . $exceptionClassName;
