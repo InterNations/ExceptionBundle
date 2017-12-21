@@ -1,9 +1,9 @@
 <?php
-namespace InterNations\Bundle\ExceptionTestBundle; // @codingStandardsIgnoreLine
+namespace InterNations\Bundle\ExceptionTestBundle;
 
 use FooException;
 
-class UndeclaredException // @codingStandardsIgnoreLine
+class UndeclaredException
 {
     public function throwException()
     {

@@ -1,4 +1,4 @@
-<?php // @codingStandardsIgnoreLine
+<?php
 
 function throw_exception()
 {

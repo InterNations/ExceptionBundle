@@ -1,10 +1,10 @@
 <?php
-namespace InterNations\Bundle\ExceptionTestBundle; // @codingStandardsIgnoreLine
+namespace InterNations\Bundle\ExceptionTestBundle;
 
-use stdClass, // @codingStandardsIgnoreLine
+use stdClass,
     InterNations\Bundle\ExceptionTestBundle\Exception\RuntimeException;
 
-class FqException // @codingStandardsIgnoreLine
+class FqException
 {
     public function throwException()
     {
