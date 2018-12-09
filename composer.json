@@ -7,7 +7,7 @@
         "symfony/console": "^3.0|^4.0",
         "nikic/php-parser": "~2|~3",
         "lstrojny/functional-php": "dev-master",
-        "php": "~7"
+        "php": "~7.1"
     },
     "authors": [
         {
