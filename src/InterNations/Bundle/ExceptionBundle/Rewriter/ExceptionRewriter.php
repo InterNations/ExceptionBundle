@@ -152,7 +152,7 @@ class ExceptionRewriter
         $startLine = $node->getAttribute('startLine');
         $endLine = $node->getAttribute('endLine');
 
-        assert($startLine === $endLine);
+        assert($startLine <= $endLine);
         assert($startLine - 1 > 0);
 
         return $startLine - 1;
