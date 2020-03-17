@@ -3,7 +3,7 @@
     "description": "Helps making your Symfony Bundle a good Exception citizen. Yes, it’s opinionated.",
     "license": "MIT",
     "require": {
-        "symfony/finder": "~3",
+        "symfony/finder": "~3|^4.0",
         "symfony/console": "^3.0|^4.0",
         "nikic/php-parser": "~2|~3|~4",
         "lstrojny/functional-php": "dev-master",
