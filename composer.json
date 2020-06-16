@@ -6,7 +6,7 @@
         "symfony/finder": "~3|^4.0",
         "symfony/console": "^3.0|^4.0",
         "nikic/php-parser": "~2|~3|~4",
-        "lstrojny/functional-php": "dev-master",
+        "lstrojny/functional-php": "~0|~1",
         "php": ">=7.1"
     },
     "authors": [
@@ -23,8 +23,8 @@
         "psr-0": {"InterNations\\Bundle\\ExceptionBundle": "src/"}
     },
     "require-dev": {
-        "internations/kodierungsregelwerksammlung": "dev-master",
-        "internations/testing-component": "dev-master",
+        "internations/kodierungsregelwerksammlung": "~0",
+        "internations/testing-component": "~1",
         "phpunit/phpunit": "~6"
     }
 }
