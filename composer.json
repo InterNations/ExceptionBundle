@@ -26,5 +26,10 @@
         "internations/kodierungsregelwerksammlung": "~0",
         "internations/testing-component": "~1",
         "phpunit/phpunit": "~6"
+    },
+    "scripts": {
+        "tests": "phpunit",
+        "coding-style": "phpcs --standard=vendor/internations/kodierungsregelwerksammlung/ruleset.xml --exclude=InterNations.Naming.NamespaceName,InterNations.Naming.Final --ignore=*/Fixtures/* ./src/",
+        "backward-compatibility-check": "roave-backward-compatibility-check"
     }
 }
