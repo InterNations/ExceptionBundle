@@ -56,7 +56,7 @@ class ExceptionVisitor extends AbstractNodeVisitor
         if ($expressionTypes !== null) {
             $throwStatements = array_filter(
                 $throwStatements,
-                static function ($stmt) use ($expressionTypes) {
+                static function (ThrowStatement $stmt) use ($expressionTypes) : bool {
                     foreach ($expressionTypes as $expressionType) {
                         if ($stmt->expr instanceof $expressionType) {
                             return true;
@@ -71,7 +71,7 @@ class ExceptionVisitor extends AbstractNodeVisitor
         if ($namespace !== null) {
             $throwStatements = array_filter(
                 $throwStatements,
-                function ($stmt) use ($namespace) {
+                function (ThrowStatement $stmt) use ($namespace): bool {
                     return $this->isInNamespace($namespace, $stmt->expr->class);
                 }
             );

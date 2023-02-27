@@ -58,7 +58,12 @@ class MarkerInterfaceGenerator
             "\n",
             array_reduce(
                 $lines,
-                static function (array $carry, $value) {
+                /**
+                 * @param string[] $carry
+                 * @param string|array $value
+                 * @return string[]
+                 */
+                static function (array $carry, $value): array {
                     return array_merge($carry, is_array($value) ? $value : [$value]);
                 },
                 []
